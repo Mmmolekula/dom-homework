@@ -71,11 +71,11 @@
     buttonElement.addEventListener("click", () => {
       nameInputElement.classList.remove("error");
       commentInputElement.classList.remove("error");
-      if (nameInputElement.value === "" || nameInputElement.value === ' ') {
+      if (nameInputElement.value.trim() === "") {
         nameInputElement.classList.add("error")
         return;
       };
-      if (commentInputElement.value === "" || commentInputElement.value === ' ') {
+      if (commentInputElement.value.trim() === "") {
         commentInputElement.classList.add("error")
         return;
       };
