@@ -52,21 +52,31 @@
         </div>
       </div>
     </div>
-
+  <style>
+    .error {
+      background-color: pink;
+    }
+  </style>
   <script>
     // "use strict";
+    const newDate = new Date();
+    const currentDate = newDate;
+    const options = { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' };
+
     const buttonElement = document.getElementById("add-comment");
     const listElement = document.getElementById("commentlist");
     const nameInputElement = document.getElementById("name-input");
     const commentInputElement = document.getElementById("comment-input");
 
     buttonElement.addEventListener("click", () => {
-      if (nameInputElement.value === '') {
-        alert("Введите, пожалуйста, имя.")
+      nameInputElement.classList.remove("error");
+      commentInputElement.classList.remove("error");
+      if (nameInputElement.value === "" || nameInputElement.value === ' ') {
+        nameInputElement.classList.add("error")
         return;
       };
-      if (commentInputElement.value === '') {
-        alert("Введите, пожалуйста, комментарий.")
+      if (commentInputElement.value === "" || commentInputElement.value === ' ') {
+        commentInputElement.classList.add("error")
         return;
       };
 
@@ -75,7 +85,7 @@
           `<li class="comment">
            <div class="comment-header">
            <div>${nameInputElement.value}</div>
-            <div>${}</div>
+            <div>${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}</div>
           </div>
           <div class="comment-body">
           <div class="comment-text">
