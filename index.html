@@ -40,7 +40,7 @@
   </style>
 
   <script>
-    const comments = [
+  const comments = [
       {
       name: "Глеб Фокин",
       date: new Date("2023-02-01T12:20:52.308Z"),
@@ -143,6 +143,15 @@
 
   });
 
-  </script>
+  for (const comment of document.querySelectorAll('.comment')) {
+  comment.addEventListener ("click", (event) => {
+    event.stopPropagation();
+    const currentComment = comments[comment.dataset.index];
+    text.value = `${currentComment.name}:
+    ${currentComment.text}`;
+  });
+}
+
+</script>
 
 </html>
