@@ -64,7 +64,7 @@
   const initLikesListeners = () => {
     const likeButtonsElements = document.querySelectorAll(".like-button");
 
-    for (likeButtonElement of likeButtonsElements) {
+    for (let likeButtonElement of likeButtonsElements) {
       likeButtonElement.addEventListener("click", (event) => {
 
         const indexL = likeButtonElement.dataset.index;
