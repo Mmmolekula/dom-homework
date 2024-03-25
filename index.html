@@ -66,7 +66,7 @@
 
     for (let likeButtonElement of likeButtonsElements) {
       likeButtonElement.addEventListener("click", (event) => {
-
+        event.stopPropagation();   
         const indexL = likeButtonElement.dataset.index;
         const comment = comments[indexL];
         comment.likes = comment.isLiked ? comment.likes - 1 : comment.likes + 1;
@@ -77,13 +77,19 @@
     }
   }
   
+
   const renderComments = () => {
     list.innerHTML = comments.map((comment, index) => {
       return `
       <li class="comment" data-index="${index}">
         <div class="comment-header">
-          <div>${comment.name}</div>
-          <div>${comment.date.toLocaleDateString()} ${comment.date.toLocaleTimeString()}</div>
+          <div>${comment.name
+            .replaceAll("%BEGIN_QUOTE", "<div class='quote'>")
+            .replaceAll("END_QUOTE%", "</div>")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")}</div>
+          <div>${comment.date.toLocaleDateString()} 
+              ${comment.date.toLocaleTimeString()}</div>
         </div>
         <div class="comment-body">
 
@@ -92,8 +98,7 @@
             .replaceAll("%BEGIN_QUOTE", "<div class='quote'>")
             .replaceAll("END_QUOTE%", "</div>")
             .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")}
-          </div>
+            .replaceAll(">", "&gt;")}</div>
         </div>
         <div class="comment-footer">
           <div class="likes">
@@ -115,7 +120,7 @@
 
   const addButton = document.querySelector(".add-form-button");
   addButton.addEventListener("click", (event) => {
-    event.stopPropagation();
+    // event.stopPropagation();
     name.classList.remove("error");
     text.classList.remove("error");
     if (!name.value.trim()) {
