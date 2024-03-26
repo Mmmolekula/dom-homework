@@ -52,21 +52,45 @@
         </div>
       </div>
     </div>
-
+  <style>
+    .error {
+      background-color: pink;
+    }
+  </style>
   <script>
-    // "use strict";
+    "use strict";
+    // const newDate = new Date();
+    // let currentDate = new Date().toLocaleDateString([], { day: '2-digit', month: '2-digit', year: '2-digit'});
+    // let currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit' });
+    // const options = { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' };
+    // setInterval(() => {
+    //   currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit' });
+    // }, 1000);
+
+
     const buttonElement = document.getElementById("add-comment");
     const listElement = document.getElementById("commentlist");
     const nameInputElement = document.getElementById("name-input");
     const commentInputElement = document.getElementById("comment-input");
 
     buttonElement.addEventListener("click", () => {
-      if (nameInputElement.value === '') {
-        alert("Введите, пожалуйста, имя.")
+
+      let currentDate = new Date().toLocaleDateString([], { 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: '2-digit',
+        hour: '2-digit', 
+        minute: '2-digit',
+      });
+
+      nameInputElement.classList.remove("error");
+      commentInputElement.classList.remove("error");
+      if (nameInputElement.value.trim() === "") {
+        nameInputElement.classList.add("error")
         return;
       };
-      if (commentInputElement.value === '') {
-        alert("Введите, пожалуйста, комментарий.")
+      if (commentInputElement.value.trim() === "") {
+        commentInputElement.classList.add("error")
         return;
       };
 
@@ -75,7 +99,7 @@
           `<li class="comment">
            <div class="comment-header">
            <div>${nameInputElement.value}</div>
-            <div>${Date()}</div>
+            <div>${currentDate}</div>
           </div>
           <div class="comment-body">
           <div class="comment-text">
