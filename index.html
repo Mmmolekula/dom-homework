@@ -23,8 +23,8 @@
         id="text-input" 
         class="add-form-text" 
         placeholder="Введите ваш коментарий" 
-        rows="4">
-      </textarea>
+        rows="4"
+      ></textarea>
 
         <div class="add-form-row">
           <button class="add-form-button">Написать</button>
@@ -148,6 +148,7 @@
 
   });
 
+  
   for (const comment of document.querySelectorAll('.comment')) {
   comment.addEventListener ("click", (event) => {
     event.stopPropagation();
@@ -156,6 +157,7 @@
     ${currentComment.text}`;
   });
 }
+
 
 </script>
 
