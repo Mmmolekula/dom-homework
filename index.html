@@ -23,8 +23,8 @@
         id="text-input" 
         class="add-form-text" 
         placeholder="Введите ваш коментарий" 
-        rows="4">
-      </textarea>
+        rows="4"
+      ></textarea>
 
         <div class="add-form-row">
           <button class="add-form-button">Написать</button>
@@ -33,33 +33,32 @@
     </div>
   </body>
 
-  <style>
+  <style> 
     .error {
       background-color: pink;
     }
   </style>
 
   <script>
-  let comments = [
-      {
-      name: "Глеб Фокин",
-      date: new Date("2023-02-01T12:20:52.308Z"),
-      text: "Это будет первый комментарий на этой странице",
-      likes: 3,
-      isLiked: false,
-    },
-    {
-      name: "Варвара Н.",
-      date: new Date("2023-02-15T19:45:56.308Z"),
-      text: "Мне нравится как оформлена эта страница! ❤",
-      likes: 75,
-      isLiked: true,
-    }];
+  let comments = [];
 
   const name = document.getElementById("name-input");
   const text = document.getElementById("text-input");
     
   const list = document.querySelector(".comments");
+
+ const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
+      method: "GET"
+    });
+
+    fetchPromise.then((response) => {
+      const jsonPromise = response.json();
+
+      jsonPromise.then((responseData) => {
+        comments = responseData.comments;
+        renderComments();
+      });
+    });
 
   const initLikesListeners = () => {
     const likeButtonsElements = document.querySelectorAll(".like-button");
@@ -68,7 +67,7 @@
       likeButtonElement.addEventListener("click", (event) => {
         event.stopPropagation();   
         const indexL = likeButtonElement.dataset.index;
-        const comment = comments[indexL];
+        let comment = comments[indexL];
         comment.likes = comment.isLiked ? comment.likes - 1 : comment.likes + 1;
         comment.isLiked = !comment.isLiked;
 
@@ -78,18 +77,18 @@
   }
   
 
-  let renderComments = () => {
-    list.innerHTML = comments.map((comment, index) => {
+  const renderComments = () => {
+    list.innerHTML = comments.map((comment, author, index) => {
       return `
       <li class="comment" data-index="${index}">
         <div class="comment-header">
-          <div>${comment.name
+          <div>${comment.author.name
             .replaceAll("%BEGIN_QUOTE", "<div class='quote'>")
             .replaceAll("END_QUOTE%", "</div>")
             .replaceAll("<", "&lt;")
             .replaceAll(">", "&gt;")}</div>
-          <div>${comment.date.toLocaleDateString()} 
-              ${comment.date.toLocaleTimeString()}</div>
+          <div>${new Date().toLocaleDateString()} 
+              ${new Date().toLocaleTimeString()}</div>
         </div>
         <div class="comment-body">
 
@@ -143,10 +142,8 @@
 
     renderComments();
 
-    name.value = "";
-    text.value = "";
-
   });
+
 
   for (const comment of document.querySelectorAll('.comment')) {
   comment.addEventListener ("click", (event) => {
@@ -157,41 +154,8 @@
   });
 }
 
-const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
-  method: "GET"
-});
-
-fetchPromise.then((response) => {
-  const jsonPromise = response.json();
-  jsonPromise.then((responseData) => {
-    const appComments = responseData.comments.map((comment) => {
-      return {
-        name: comment.author.name,
-        date: new Date(comment.date),
-        text: comment.text,
-        likesCount: comment.likesCount,
-        isLiked: false,
-        isEdited: false,
-      };
-      renderComments();
-    });
-  })
-})
-
-fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
-        method: "POST",
-        body: JSON.stringify({
-          text: textInputElement.value
-        })
-      }).then((response) => {
-        response.json().then((responseData) => {
-          // comments = responseData.comments; ???
-          renderComments();
-        });
-      });
-
-      renderComments();
-
+    name.value = "";
+    text.value = "";
 
 </script>
 
