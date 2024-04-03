@@ -68,6 +68,7 @@
         event.stopPropagation();   
         const indexL = likeButtonElement.dataset.index;
         let comment = comments[indexL];
+        // console.log()
         comment.likes = comment.isLiked ? comment.likes - 1 : comment.likes + 1;
         comment.isLiked = !comment.isLiked;
 
@@ -78,7 +79,7 @@
   
 
   const renderComments = () => {
-    list.innerHTML = comments.map((comment, author, index) => {
+    list.innerHTML = comments.map((comment, index) => {
       return `
       <li class="comment" data-index="${index}">
         <div class="comment-header">
@@ -114,7 +115,7 @@
 
   };
 
-  renderComments();
+  // renderComments();
 
 
   const addButton = document.querySelector(".add-form-button");
