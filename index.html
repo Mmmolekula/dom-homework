@@ -88,8 +88,8 @@
             .replaceAll("END_QUOTE%", "</div>")
             .replaceAll("<", "&lt;")
             .replaceAll(">", "&gt;")}</div>
-          <div>${new Date().toLocaleDateString()} 
-              ${new Date().toLocaleTimeString()}</div>
+          <div>${new Date(comment.date).toLocaleDateString()} 
+              ${new Date(comment.date).toLocaleTimeString()}</div>
         </div>
         <div class="comment-body">
 
@@ -112,6 +112,7 @@
     }).join("")
 
     initLikesListeners();
+    commentQuote();
 
   };
 
@@ -123,18 +124,21 @@
     // event.stopPropagation();
     name.classList.remove("error");
     text.classList.remove("error");
-    if (!name.value.trim()) {
+    if (!name.value.trim() || name.value.trim().length <3 ) {
       name.classList.add("error");
       return;
     }
-    else if (!text.value.trim()) {
+    else if (!text.value.trim() || text.value.trim().length <3 ) {
       text.classList.add("error");
       return;
     };
 
-
-    comments.push({
-      name: name.value,
+    fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
+      method: "POST",
+      body: JSON.stringify({text:text.value, name:name.value})
+    }).then(() => {
+      comments.push({
+      author: {name:name.value},
       text: text.value,
       date: new Date(),
       likes: 0,
@@ -143,20 +147,38 @@
 
     renderComments();
 
+    name.value = "";
+    text.value = "";
+
+    });
+
+
+    // comments.push({
+    //   author: {name:name.value},
+    //   text: text.value,
+    //   date: new Date(),
+    //   likes: 0,
+    //   isLiked: false,
+    // });
+
+    // renderComments();
+
+    // name.value = "";
+    // text.value = "";
+
   });
 
-
+function commentQuote() {
   for (const comment of document.querySelectorAll('.comment')) {
   comment.addEventListener ("click", (event) => {
     event.stopPropagation();
     const currentComment = comments[comment.dataset.index];
-    text.value = `${currentComment.name}:
+    text.value = `${currentComment.author.name}:
     ${currentComment.text}`;
   });
-}
+  }
+};
 
-    name.value = "";
-    text.value = "";
 
 </script>
 
