@@ -68,7 +68,6 @@
         event.stopPropagation();   
         const indexL = likeButtonElement.dataset.index;
         let comment = comments[indexL];
-        // console.log()
         comment.likes = comment.isLiked ? comment.likes - 1 : comment.likes + 1;
         comment.isLiked = !comment.isLiked;
 
