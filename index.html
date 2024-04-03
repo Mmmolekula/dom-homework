@@ -76,7 +76,6 @@
       })
     }
   }
-  
 
   const renderComments = () => {
     list.innerHTML = comments.map((comment, index) => {
@@ -112,11 +111,12 @@
     }).join("")
 
     initLikesListeners();
+    commentQuote();
+
 
   };
 
   renderComments();
-
 
   const addButton = document.querySelector(".add-form-button");
   addButton.addEventListener("click", (event) => {
@@ -149,14 +149,18 @@
   });
 
 
+function commentQuote () {
   for (const comment of document.querySelectorAll('.comment')) {
   comment.addEventListener ("click", (event) => {
     event.stopPropagation();
     const currentComment = comments[comment.dataset.index];
     text.value = `${currentComment.name}:
     ${currentComment.text}`;
-  });
+    });
+  }
 }
+
+
 </script>
 
 </html>
