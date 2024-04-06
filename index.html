@@ -53,9 +53,8 @@
 
   const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
       method: "GET"
-    });
-
-    fetchPromise.then((response) => {
+    }).then((response) => {
+      
       const jsonPromise = response.json();
 
       jsonPromise.then((responseData) => {
