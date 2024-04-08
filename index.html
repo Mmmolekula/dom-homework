@@ -51,18 +51,21 @@
       "Комментарии подгружаются... Пожалуйста, подождите.";
   document.querySelector(".add-form-button").disabled = true;
 
+function getComments() {
   const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
       method: "GET"
-    }).then((response) => {
-      
-      const jsonPromise = response.json();
-
-      jsonPromise.then((responseData) => {
-        comments = responseData.comments;
-        renderComments();
-        document.querySelector(".add-form-button").disabled = false;
-      });
-    });
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseData) => {
+      comments = responseData.comments;
+      renderComments();
+      document.querySelector(".add-form-button").disabled = false;
+       })    
+      };
+    
+getComments();
 
   const initLikesListeners = () => {
     const likeButtonsElements = document.querySelectorAll(".like-button");
@@ -147,21 +150,22 @@
     fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
       method: "POST",
       body: JSON.stringify({text:text.value, name:name.value})
-    }).then(() => {
-
-      comments.push({
-      author: {name:name.value},
-      text: text.value,
-      date: new Date(),
-      likes: 0,
-      isLiked: false,
-    });
-
-    renderComments();
-
-    name.value = "";
-    text.value = "";
-
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseData) => {
+      return fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
+      method: "GET",
+      });
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseData) => {
+      comments = responseData.comments;
+      renderComments();
+      document.querySelector(".add-form-button").disabled = false;
     })
     .then(() => {
       addButton.disabled = false;
@@ -169,8 +173,6 @@
       addButton.style.fontSize = "24px";
     });
   };
-
-
     // comments.push({
     //   author: {name:name.value},
     //   text: text.value,
@@ -181,8 +183,8 @@
 
     // renderComments();
 
-    // name.value = "";
-    // text.value = "";
+    name.value = "";
+    text.value = "";
 
   });
 
