@@ -149,23 +149,13 @@ getComments();
   function postComment() {
     fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
       method: "POST",
-      body: JSON.stringify({text:text.value, name:name.value})
+      body: JSON.stringify({text: text.value, name: name.value})
     })
     .then((response) => {
       return response.json();
     })
-    .then((responseData) => {
-      return fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
-      method: "GET",
-      });
-    })
-    .then((response) => {
-      return response.json();
-    })
-    .then((responseData) => {
-      comments = responseData.comments;
-      renderComments();
-      document.querySelector(".add-form-button").disabled = false;
+    .then(() => {
+      getComments();
     })
     .then(() => {
       addButton.disabled = false;
