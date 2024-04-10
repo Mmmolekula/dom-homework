@@ -56,13 +56,25 @@ function getComments() {
       method: "GET"
     })
     .then((response) => {
-      return response.json();
+      if (response.status === 500) {
+        return Promise.reject("Сервер сломался/упал. Повторите позже.");
+      }
+      else if (response.status === 400) {
+        return Promise.reject("Ошибка запроса/Неверный запрос. Повторите позже.");
+      }
+      else {
+        return response.json();
+      }
     })
     .then((responseData) => {
       comments = responseData.comments;
       renderComments();
       document.querySelector(".add-form-button").disabled = false;
-       })    
+       })
+    .catch((error) => {
+      alert("Кажется, что-то пошло не так. Попробуйте позже.");
+      console.log(error)
+    })    
       };
     
 getComments();
@@ -133,10 +145,12 @@ getComments();
     text.classList.remove("error");
     if (!name.value.trim() || name.value.trim().length <3 ) {
       name.classList.add("error");
+      alert("Имя должно быть не короче 3 символов.");
       return;
     }
     else if (!text.value.trim() || text.value.trim().length <3 ) {
       text.classList.add("error");
+      alert("Комментарий должен быть не короче 3 символов.");
       return;
     };
 
@@ -149,10 +163,18 @@ getComments();
   function postComment() {
     fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
       method: "POST",
-      body: JSON.stringify({text: text.value, name: name.value})
+      body: JSON.stringify({text: text.value, name: name.value, forceError: true})
     })
     .then((response) => {
-      return response.json();
+      if (response.status === 500) {
+        return Promise.reject("Сервер сломался/упал. Повторите позже.");
+      }
+      else if (response.status === 400) {
+        return Promise.reject("Ошибка запроса/Неверный запрос. Повторите позже.");
+      }
+      else {
+        return response.json();
+      }
     })
     .then(() => {
       getComments();
@@ -161,21 +183,17 @@ getComments();
       addButton.disabled = false;
       addButton.textContent = "Написать";
       addButton.style.fontSize = "24px";
-    });
-  };
-    // comments.push({
-    //   author: {name:name.value},
-    //   text: text.value,
-    //   date: new Date(),
-    //   likes: 0,
-    //   isLiked: false,
-    // });
-
-    // renderComments();
-
-    name.value = "";
-    text.value = "";
-
+      name.value = "";
+      text.value = "";
+    })
+    .catch((error) => {
+      alert("Кажется, что-то пошло не так. Попробуйте позже.");
+      console.log(error)
+      addButton.disabled = false;
+      addButton.textContent = "Написать";
+      addButton.style.fontSize = "24px";
+     })
+    };
   });
 
 function commentQuote() {
