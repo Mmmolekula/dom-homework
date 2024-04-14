@@ -72,7 +72,7 @@ function getComments() {
       document.querySelector(".add-form-button").disabled = false;
        })
     .catch((error) => {
-      alert("Кажется, что-то пошло не так. Попробуйте позже.");
+      alert(error);
       console.log(error)
     })    
       };
@@ -187,7 +187,7 @@ getComments();
       text.value = "";
     })
     .catch((error) => {
-      alert("Кажется, что-то пошло не так. Попробуйте позже.");
+      alert(error);
       console.log(error)
       addButton.disabled = false;
       addButton.textContent = "Написать";
