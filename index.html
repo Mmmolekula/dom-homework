@@ -55,6 +55,9 @@ function getComments() {
   const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
       method: "GET"
     })
+    .catch((error_f) => {
+      alert("Fetch-запрос неудачен. Повторите.")
+    })
     .then((response) => {
       if (response.status === 500) {
         return Promise.reject("Сервер сломался/упал. Повторите позже.");
@@ -143,14 +146,12 @@ getComments();
     // event.stopPropagation();
     name.classList.remove("error");
     text.classList.remove("error");
-    if (!name.value.trim() || name.value.trim().length <3 ) {
+    if (!name.value.trim()) {
       name.classList.add("error");
-      alert("Имя должно быть не короче 3 символов.");
       return;
     }
-    else if (!text.value.trim() || text.value.trim().length <3 ) {
+    else if (!text.value.trim()) {
       text.classList.add("error");
-      alert("Комментарий должен быть не короче 3 символов.");
       return;
     };
 
@@ -164,6 +165,9 @@ getComments();
     fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
       method: "POST",
       body: JSON.stringify({text: text.value, name: name.value, forceError: true})
+    })
+    .catch((error_p) => {
+      alert("Fetch-запрос неудачен. Повторите.")
     })
     .then((response) => {
       if (response.status === 500) {
