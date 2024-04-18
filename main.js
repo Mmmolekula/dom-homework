@@ -1,6 +1,5 @@
 import { fetchGet, fetchPost } from "./api.js";
 import { renderComments } from "./render.js";
-import { commentQuote } from "./quotefun.js";
 
 export let comments = [];
 
