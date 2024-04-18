@@ -1,12 +1,11 @@
 import { fetchGet, fetchPost } from "./api.js";
-import { renderComments } from "./render.js"
+import { renderComments } from "./render.js";
 
 export let comments = [];
 
 const name = document.getElementById("name-input");
 const text = document.getElementById("text-input");
 
-// const list = document.querySelector(".comments");
 
 document.querySelector(".comments").textContent = 
     "Комментарии подгружаются... Пожалуйста, подождите.";
@@ -27,65 +26,8 @@ fetchGet()
   
 getComments();
 
-export const initLikesListeners = () => {
-  const likeButtonsElements = document.querySelectorAll(".like-button");
-
-  for (let likeButtonElement of likeButtonsElements) {
-    likeButtonElement.addEventListener("click", (event) => {
-      event.stopPropagation();   
-      const indexL = likeButtonElement.dataset.index;
-      let comment = comments[indexL];
-      comment.likes = comment.isLiked ? comment.likes - 1 : comment.likes + 1;
-      comment.isLiked = !comment.isLiked;
-
-      renderComments();
-    })
-  }
-}
-
-
-// const renderComments = () => {
-
-//   list.innerHTML = comments.map((comment, index) => {
-//     return `
-//     <li class="comment" data-index="${index}">
-//       <div class="comment-header">
-//         <div>${comment.author.name
-//           .replaceAll("%BEGIN_QUOTE", "<div class='quote'>")
-//           .replaceAll("END_QUOTE%", "</div>")
-//           .replaceAll("<", "&lt;")
-//           .replaceAll(">", "&gt;")}</div>
-//         <div>${new Date(comment.date).toLocaleDateString()} 
-//             ${new Date(comment.date).toLocaleTimeString()}</div>
-//       </div>
-//       <div class="comment-body">
-
-//         <div class="comment-text">
-//           ${comment.text
-//           .replaceAll("%BEGIN_QUOTE", "<div class='quote'>")
-//           .replaceAll("END_QUOTE%", "</div>")
-//           .replaceAll("<", "&lt;")
-//           .replaceAll(">", "&gt;")}</div>
-//       </div>
-//       <div class="comment-footer">
-//         <div class="likes">
-//           <span class="likes-counter">${comment.likes}</span>лайка
-//           <button data-index="${index}" class="like-button ${comment.isLiked ? "-active-like" : ""
-//         }"></button>
-//           </div>
-//         </div>
-//       </li>
-//   `
-//   }).join("")
-
-//   initLikesListeners();
-//   commentQuote();
-
-// };
-
 const addButton = document.querySelector(".add-form-button");
-addButton.addEventListener("click", (event) => {
-  // event.stopPropagation();
+addButton.addEventListener("click", () => {
   name.classList.remove("error");
   text.classList.remove("error");
   if (!name.value.trim()) {
