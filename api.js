@@ -3,7 +3,7 @@ export function fetchGet() {
     method: "GET"
   })
   .catch(() => {
-    alert("Fetch-запрос неудачен. Повторите.")
+    return Promise.reject("Fetch-запрос неудачен. Повторите.");
   })
   .then((response) => {
     if (response.status === 500) {

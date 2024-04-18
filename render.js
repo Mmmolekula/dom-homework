@@ -1,7 +1,7 @@
-const list = document.querySelector(".comments");
+import { commentQuote, comments, initLikesListeners } from "./main.js"
 
 export const renderComments = () => {
-
+  const list = document.querySelector(".comments");
     list.innerHTML = comments.map((comment, index) => {
       return `
       <li class="comment" data-index="${index}">
