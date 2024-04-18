@@ -1,10 +1,11 @@
 import { fetchGet, fetchPost } from "./api.js";
 import { renderComments } from "./render.js";
+import { commentQuote } from "./quotefun.js";
 
 export let comments = [];
 
 const name = document.getElementById("name-input");
-const text = document.getElementById("text-input");
+export const text = document.getElementById("text-input");
 
 
 document.querySelector(".comments").textContent = 
@@ -66,14 +67,3 @@ function postComment() {
    })
   };
 });
-
-export function commentQuote() {
-for (const comment of document.querySelectorAll('.comment')) {
-comment.addEventListener ("click", (event) => {
-  event.stopPropagation();
-  const currentComment = comments[comment.dataset.index];
-  text.value = `${currentComment.author.name}:
-  ${currentComment.text}`;
-    });
-  }
-};

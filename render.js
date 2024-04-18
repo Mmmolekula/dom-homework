@@ -1,5 +1,6 @@
-import { commentQuote, comments } from "./main.js";
+import { comments } from "./main.js";
 import { initLikesListeners } from "./likesfun.js";
+import { commentQuote } from "./quotefun.js";
 
 export const renderComments = () => {
   const list = document.querySelector(".comments");
