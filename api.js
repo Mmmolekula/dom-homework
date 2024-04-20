@@ -1,6 +1,18 @@
+const commentsURL = "https://wedev-api.sky.pro/api/v2/maria-maltseva/comments";
+const userURL = "https://wedev-api.sky.pro/api/user/login";
+
+export let token;
+export const setToken = (newToken) => {
+  token = newToken;
+}
+
+
 export function fetchGet() {
-    return fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
-    method: "GET"
+    return fetch(commentsURL, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   })
   .catch(() => {
     return Promise.reject("Fetch-запрос неудачен. Повторите.");
@@ -19,8 +31,11 @@ export function fetchGet() {
 };
 
 export function fetchPost({text, name}) {
-    return fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
+    return fetch(commentsURL, {
     method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+  },
     body: JSON.stringify({text: text.value, name: name.value, forceError: true})
   })
   .catch(() => {
@@ -38,3 +53,20 @@ export function fetchPost({text, name}) {
     }
   })
 };
+
+export function login ({login, password}) {
+  return fetch(userURL, {
+    method: "POST",
+    body: JSON.stringify({
+      login,
+      password,
+    })
+  })
+  .then((response) => {
+    return response.json();
+  })
+}
+
+
+
+

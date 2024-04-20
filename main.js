@@ -1,7 +1,10 @@
 import { fetchGet, fetchPost } from "./api.js";
+import { renderLogin } from "./loginPage.js";
 import { renderComments } from "./render.js";
 
 export let comments = [];
+// export let isAuthenticated = false;
+// let isAuthorized = false;
 
 const name = document.getElementById("name-input");
 export const text = document.getElementById("text-input");
@@ -25,6 +28,7 @@ fetchGet()
     };
   
 getComments();
+renderLogin();
 
 const addButton = document.querySelector(".add-form-button");
 addButton.addEventListener("click", () => {
