@@ -66,7 +66,3 @@ export function login ({login, password}) {
     return response.json();
   })
 }
-
-
-
-

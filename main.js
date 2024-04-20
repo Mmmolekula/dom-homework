@@ -1,13 +1,19 @@
 import { fetchGet, fetchPost } from "./api.js";
-import { renderLogin } from "./loginPage.js";
 import { renderComments } from "./render.js";
 
+
 export let comments = [];
-// export let isAuthenticated = false;
-// let isAuthorized = false;
 
 const name = document.getElementById("name-input");
 export const text = document.getElementById("text-input");
+
+const loginPage = document.getElementById("login-page");
+const loginLink = document.getElementById("login-link");
+const authMessage = document.getElementById("auth-message");
+loginLink.addEventListener("click", () => {
+    loginPage.style.display = "block";
+    authMessage.style.display = "none";
+});
 
 
 document.querySelector(".comments").textContent = 
@@ -28,7 +34,6 @@ fetchGet()
     };
   
 getComments();
-renderLogin();
 
 const addButton = document.querySelector(".add-form-button");
 addButton.addEventListener("click", () => {
