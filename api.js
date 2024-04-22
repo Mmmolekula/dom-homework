@@ -4,7 +4,12 @@ const userURL = "https://wedev-api.sky.pro/api/user/login";
 export let token;
 export const setToken = (newToken) => {
   token = newToken;
-}
+};
+
+export let username;
+export const setUsername = (newUsername) => {
+  username = newUsername;
+  };
 
 
 export function fetchGet() {

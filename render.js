@@ -1,10 +1,12 @@
 import { comments } from "./main.js";
 import { initLikesListeners } from "./likesfun.js";
 import { commentQuote } from "./quotefun.js";
+import { token } from "./api.js";
+import { authAction, formAction } from "./listeners.js";
 
 export const renderComments = () => {
-  const list = document.querySelector(".comments");
-    list.innerHTML = comments.map((comment, index) => {
+  const app = document.getElementById("app");
+    const commentsHtml = comments.map((comment, index) => {
       return `
       <li class="comment" data-index="${index}">
         <div class="comment-header">
@@ -35,8 +37,41 @@ export const renderComments = () => {
         </li>
     `
     }).join("")
+
+    const formHtml = `
+    <div class="add-form">
+     <input 
+     type="text" 
+     id="name-input"
+     class="add-form-name" 
+     placeholder="Введите ваше имя"
+     />
+
+     <textarea 
+     type="textarea"
+     id="text-input" 
+     class="add-form-text" 
+     placeholder="Введите ваш коментарий" 
+     rows="4"
+   ></textarea>
+     <div class="add-form-row">
+       <button class="add-form-button">Написать</button>
+     </div>
+   </div>`
+
+    const authHtml = `
+    <div class="add-auth" id="auth-message">Чтобы добавить комментарий, <span id="login-link" >авторизуйтесь</span>.</div>`
+
+    app.innerHTML = ` 
+    <ul class="comments">
+    ${commentsHtml}
+    </ul>
+    ${token ? formHtml : authHtml}
+   
   
+   `
     initLikesListeners();
     commentQuote();
-  
+    formAction();
+    authAction();
   };

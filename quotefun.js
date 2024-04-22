@@ -1,7 +1,7 @@
 import { comments } from "./main.js";
-import { text } from "./main.js";
 
 export function commentQuote() {
+  const text = document.getElementById("text-input");
     for (const comment of document.querySelectorAll('.comment')) {
     comment.addEventListener ("click", (event) => {
       event.stopPropagation();
