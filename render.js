@@ -43,7 +43,7 @@ export const renderComments = () => {
      <input 
      type="text" 
      id="name-input"
-     class="add-form-name" 
+     class="add-form-name" readonly 
      placeholder="Введите ваше имя"
      />
 
