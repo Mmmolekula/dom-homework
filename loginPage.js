@@ -29,8 +29,8 @@ loginButton.addEventListener("click", () => {
         getComments();
         })
         .catch((error) => {
-            console.error("Ошибка входа:", error);
-            alert("Неверный логин или пароль.");
+            console.error(error);
+            alert(error.message);
         });
     })
 };

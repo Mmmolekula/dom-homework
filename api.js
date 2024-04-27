@@ -68,6 +68,11 @@ export function login ({login, password}) {
     })
   })
   .then((response) => {
-    return response.json();
+    if (response.status === 400) {
+      throw new Error("Неправильный логин или пароль.");
+    }
+    else {
+      return response.json();
+    }
   })
 }

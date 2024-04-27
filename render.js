@@ -1,7 +1,7 @@
 import { comments } from "./main.js";
 import { initLikesListeners } from "./likesfun.js";
 import { commentQuote } from "./quotefun.js";
-import { token } from "./api.js";
+import { token, username } from "./api.js";
 import { authAction, formAction } from "./listeners.js";
 
 export const renderComments = () => {
@@ -43,6 +43,7 @@ export const renderComments = () => {
      <input 
      type="text" 
      id="name-input"
+     value = "${username}"
      class="add-form-name" readonly 
      placeholder="Введите ваше имя"
      />
@@ -50,7 +51,7 @@ export const renderComments = () => {
      <textarea 
      type="textarea"
      id="text-input" 
-     class="add-form-text" 
+     class="add-form-text"      
      placeholder="Введите ваш коментарий" 
      rows="4"
    ></textarea>
