@@ -8,6 +8,7 @@ import { format } from "date-fns";
 export const renderComments = () => {
   const app = document.getElementById("app");
     const commentsHtml = comments.map((comment, index) => {
+      const createDate = format(new Date(comment.date), 'yyyy-MM-dd hh.mm.ss');
       return `
       <li class="comment" data-index="${index}">
         <div class="comment-header">
@@ -16,8 +17,7 @@ export const renderComments = () => {
             .replaceAll("END_QUOTE%", "</div>")
             .replaceAll("<", "&lt;")
             .replaceAll(">", "&gt;")}</div>
-          <div>${new Date(comment.date).toLocaleDateString()} 
-              ${new Date(comment.date).toLocaleTimeString()}</div>
+          <div>${createDate}</div>
         </div>
         <div class="comment-body">
   
