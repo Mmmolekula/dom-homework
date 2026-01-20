@@ -8,29 +8,29 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
-       </ul>
+      <ul class="comments"></ul>
       <div class="add-form">
-        <input 
-        type="text" 
-        id="name-input"
-        class="add-form-name" 
-        placeholder="Введите ваше имя"
+        <input
+          type="text"
+          id="name-input"
+          class="add-form-name"
+          placeholder="Введите ваше имя"
         />
 
-        <textarea 
-        type="textarea"
-        id="text-input" 
-        class="add-form-text" 
-        placeholder="Введите ваш коментарий" 
-        rows="4"
-      ></textarea>
+        <textarea
+          type="textarea"
+          id="text-input"
+          class="add-form-text"
+          placeholder="Введите ваш коментарий"
+          rows="4"
+        ></textarea>
 
         <div class="add-form-row">
           <button class="add-form-button">Написать</button>
         </div>
       </div>
     </div>
+    <script type="module" src="./main.js"></script>
   </body>
 
   <style>
@@ -38,129 +38,4 @@
       background-color: pink;
     }
   </style>
-
-  <script>
-  const comments = [
-      {
-      name: "Глеб Фокин",
-      date: new Date("2023-02-01T12:20:52.308Z"),
-      text: "Это будет первый комментарий на этой странице",
-      likes: 3,
-      isLiked: false,
-    },
-    {
-      name: "Варвара Н.",
-      date: new Date("2023-02-15T19:45:56.308Z"),
-      text: "Мне нравится как оформлена эта страница! ❤",
-      likes: 75,
-      isLiked: true,
-    }];
-
-  const name = document.getElementById("name-input");
-  const text = document.getElementById("text-input");
-    
-  const list = document.querySelector(".comments");
-
-  const initLikesListeners = () => {
-    const likeButtonsElements = document.querySelectorAll(".like-button");
-
-    for (let likeButtonElement of likeButtonsElements) {
-      likeButtonElement.addEventListener("click", (event) => {
-        event.stopPropagation();   
-        const indexL = likeButtonElement.dataset.index;
-        const comment = comments[indexL];
-        comment.likes = comment.isLiked ? comment.likes - 1 : comment.likes + 1;
-        comment.isLiked = !comment.isLiked;
-
-        renderComments();
-      })
-    }
-  }
-
-  const renderComments = () => {
-    list.innerHTML = comments.map((comment, index) => {
-      return `
-      <li class="comment" data-index="${index}">
-        <div class="comment-header">
-          <div>${comment.name
-            .replaceAll("%BEGIN_QUOTE", "<div class='quote'>")
-            .replaceAll("END_QUOTE%", "</div>")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")}</div>
-          <div>${comment.date.toLocaleDateString()} 
-              ${comment.date.toLocaleTimeString()}</div>
-        </div>
-        <div class="comment-body">
-
-          <div class="comment-text">
-            ${comment.text
-            .replaceAll("%BEGIN_QUOTE", "<div class='quote'>")
-            .replaceAll("END_QUOTE%", "</div>")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")}</div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">${comment.likes}</span>лайка
-            <button data-index="${index}" class="like-button ${comment.isLiked ? "-active-like" : ""
-          }"></button>
-            </div>
-          </div>
-        </li>
-    `
-    }).join("")
-
-    initLikesListeners();
-    commentQuote();
-
-
-  };
-
-  renderComments();
-
-  const addButton = document.querySelector(".add-form-button");
-  addButton.addEventListener("click", (event) => {
-    // event.stopPropagation();
-    name.classList.remove("error");
-    text.classList.remove("error");
-    if (!name.value.trim()) {
-      name.classList.add("error");
-      return;
-    }
-    else if (!text.value.trim()) {
-      text.classList.add("error");
-      return;
-    };
-
-
-    comments.push({
-      name: name.value,
-      text: text.value,
-      date: new Date(),
-      likes: 0,
-      isLiked: false,
-    });
-
-    renderComments();
-
-    name.value = "";
-    text.value = "";
-
-  });
-
-
-function commentQuote () {
-  for (const comment of document.querySelectorAll('.comment')) {
-  comment.addEventListener ("click", (event) => {
-    event.stopPropagation();
-    const currentComment = comments[comment.dataset.index];
-    text.value = `${currentComment.name}:
-    ${currentComment.text}`;
-    });
-  }
-}
-
-
-</script>
-
 </html>
