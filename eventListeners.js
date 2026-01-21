@@ -1,3 +1,31 @@
+import { comments } from './commentsData.js';
+
+export function addComment(nameInput, textInput, renderApp) {
+  nameInput.classList.remove("error");
+  textInput.classList.remove("error");
+
+  if (!nameInput.value.trim()) {
+    nameInput.classList.add("error");
+    return;
+  } else if (!textInput.value.trim()) {
+    textInput.classList.add("error");
+    return;
+  }
+
+  comments.push({
+    name: nameInput.value,
+    text: textInput.value,
+    date: new Date(),
+    likes: 0,
+    isLiked: false,
+  });
+
+  renderApp();
+
+  nameInput.value = "";
+  textInput.value = "";
+}
+
 export function initLikesListeners(comments, renderComments) {
     const likeButtonsElements = document.querySelectorAll(".like-button");
 

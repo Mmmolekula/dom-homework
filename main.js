@@ -13,27 +13,27 @@ const renderApp = () => {
 
 renderApp();
 
-addButton.addEventListener("click", (event) => {
-  name.classList.remove("error");
-  text.classList.remove("error");
-  if (!name.value.trim()) {
-    name.classList.add("error");
-    return;
-  } else if (!text.value.trim()) {
-    text.classList.add("error");
-    return;
-  }
+// addButton.addEventListener("click", (event) => {
+//   name.classList.remove("error");
+//   text.classList.remove("error");
+//   if (!name.value.trim()) {
+//     name.classList.add("error");
+//     return;
+//   } else if (!text.value.trim()) {
+//     text.classList.add("error");
+//     return;
+//   }
 
-  comments.push({
-    name: name.value,
-    text: text.value,
-    date: new Date(),
-    likes: 0,
-    isLiked: false,
-  });
+//   comments.push({
+//     name: name.value,
+//     text: text.value,
+//     date: new Date(),
+//     likes: 0,
+//     isLiked: false,
+//   });
 
-  renderApp();
+//   renderApp();
 
-  name.value = "";
-  text.value = "";
-});
+//   name.value = "";
+//   text.value = "";
+// });
