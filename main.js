@@ -1,17 +1,21 @@
 import { comments } from './commentsData.js';
 import { renderComments } from './render.js';
-import { initLikesListeners, commentQuote } from './eventListeners.js';
+import { initLikesListeners, commentQuote, addComment } from './eventListeners.js';
 
-const name = document.getElementById("name-input");
-const text = document.getElementById("text-input");
+const nameInput = document.getElementById("name-input");
+const textInput = document.getElementById("text-input");
 const list = document.querySelector(".comments");
 const addButton = document.querySelector(".add-form-button");
 
 const renderApp = () => {
-  renderComments(comments, list, () => initLikesListeners(comments, renderApp), () => commentQuote(comments, text));
+  renderComments(comments, list, () => initLikesListeners(comments, renderApp), () => commentQuote(comments, textInput));
 };
 
 renderApp();
+
+addButton.addEventListener("click", (event) => {
+  addComment(nameInput, textInput, renderApp);
+});
 
 // addButton.addEventListener("click", (event) => {
 //   name.classList.remove("error");
