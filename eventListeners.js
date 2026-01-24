@@ -26,6 +26,19 @@ export function addComment(nameInput, textInput, renderApp) {
   textInput.value = "";
 }
 
+export function addButtonClickEvent(nameInput, textInput, renderApp) {
+  const addButton = document.querySelector(".add-form-button");
+
+  if (!addButton) {
+      console.log("Кнопка не найдена");
+      return; 
+  }
+
+  addButton.addEventListener("click", () => {
+      addComment(nameInput, textInput, renderApp);
+  });
+}
+
 export function initLikesListeners(comments, renderComments) {
     const likeButtonsElements = document.querySelectorAll(".like-button");
 

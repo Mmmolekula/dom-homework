@@ -1,11 +1,10 @@
 import { comments } from './commentsData.js';
 import { renderComments } from './render.js';
-import { initLikesListeners, commentQuote, addComment } from './eventListeners.js';
+import { initLikesListeners, commentQuote, addButtonClickEvent } from './eventListeners.js';
 
 const nameInput = document.getElementById("name-input");
 const textInput = document.getElementById("text-input");
 const list = document.querySelector(".comments");
-const addButton = document.querySelector(".add-form-button");
 
 const renderApp = () => {
   renderComments(comments, list, () => initLikesListeners(comments, renderApp), () => commentQuote(comments, textInput));
@@ -13,9 +12,7 @@ const renderApp = () => {
 
 renderApp();
 
-addButton.addEventListener("click", (event) => {
-  addComment(nameInput, textInput, renderApp);
-});
+addButtonClickEvent(nameInput, textInput, renderApp);
 
 // addButton.addEventListener("click", (event) => {
 //   name.classList.remove("error");
@@ -41,3 +38,4 @@ addButton.addEventListener("click", (event) => {
 //   name.value = "";
 //   text.value = "";
 // });
+
