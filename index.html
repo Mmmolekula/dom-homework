@@ -47,18 +47,18 @@
     
   const list = document.querySelector(".comments");
 
- const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
+ const getComments = () => {
+  return fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
       method: "GET"
-    });
-
-    fetchPromise.then((response) => {
-      const jsonPromise = response.json();
-
-      jsonPromise.then((responseData) => {
+    }).then((response) => 
+      response.json())
+      .then((responseData) => {
         comments = responseData.comments;
         renderComments();
       });
-    });
+ };
+
+ getComments();
 
   const initLikesListeners = () => {
     const likeButtonsElements = document.querySelectorAll(".like-button");
@@ -101,7 +101,7 @@
         </div>
         <div class="comment-footer">
           <div class="likes">
-            <span class="likes-counter">${comment.likes}</span>лайка
+            <span class="likes-counter">${comment.likes}</span>
             <button data-index="${index}" class="like-button ${comment.isLiked ? "-active-like" : ""
           }"></button>
             </div>
@@ -115,12 +115,8 @@
 
   };
 
-  // renderComments();
-
-
   const addButton = document.querySelector(".add-form-button");
   addButton.addEventListener("click", (event) => {
-    // event.stopPropagation();
     name.classList.remove("error");
     text.classList.remove("error");
     if (!name.value.trim() || name.value.trim().length <3 ) {
@@ -134,37 +130,14 @@
 
     fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
       method: "POST",
-      body: JSON.stringify({text:text.value, name:name.value})
+      body: JSON.stringify({text: text.value, name: name.value})
     }).then(() => {
-      comments.push({
-      author: {name:name.value},
-      text: text.value,
-      date: new Date(),
-      likes: 0,
-      isLiked: false,
-    });
-
-    renderComments();
+      getComments();
 
     name.value = "";
     text.value = "";
 
     });
-
-
-    // comments.push({
-    //   author: {name:name.value},
-    //   text: text.value,
-    //   date: new Date(),
-    //   likes: 0,
-    //   isLiked: false,
-    // });
-
-    // renderComments();
-
-    // name.value = "";
-    // text.value = "";
-
   });
 
 function commentQuote() {
@@ -174,7 +147,7 @@ function commentQuote() {
     const currentComment = comments[comment.dataset.index];
     text.value = `${currentComment.author.name}:
     ${currentComment.text}`;
-  });
+    });
   }
 };
 
