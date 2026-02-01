@@ -8,8 +8,7 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
-       </ul>
+      <ul class="comments"></ul>
       <div class="add-form">
         <input 
         type="text" 
@@ -17,7 +16,6 @@
         class="add-form-name" 
         placeholder="Введите ваше имя"
         />
-
         <textarea 
         type="textarea"
         id="text-input" 
@@ -25,133 +23,14 @@
         placeholder="Введите ваш коментарий" 
         rows="4"
       ></textarea>
-
         <div class="add-form-row">
           <button class="add-form-button">Написать</button>
         </div>
       </div>
+      <div class="form-loading" style="display: none; margin-top: 20px">
+        Комментарий добавляется...
+      </div>
     </div>
+    <script type="module" src="./index.js"></script>
   </body>
-
-  <style> 
-    .error {
-      background-color: pink;
-    }
-  </style>
-
-  <script>
-  let comments = [];
-
-  const name = document.getElementById("name-input");
-  const text = document.getElementById("text-input");
-    
-  const list = document.querySelector(".comments");
-
- const getComments = () => {
-  return fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
-      method: "GET"
-    }).then((response) => 
-      response.json())
-      .then((responseData) => {
-        comments = responseData.comments;
-        renderComments();
-      });
- };
-
- getComments();
-
-  const initLikesListeners = () => {
-    const likeButtonsElements = document.querySelectorAll(".like-button");
-
-    for (let likeButtonElement of likeButtonsElements) {
-      likeButtonElement.addEventListener("click", (event) => {
-        event.stopPropagation();   
-        const indexL = likeButtonElement.dataset.index;
-        let comment = comments[indexL];
-        comment.likes = comment.isLiked ? comment.likes - 1 : comment.likes + 1;
-        comment.isLiked = !comment.isLiked;
-
-        renderComments();
-      })
-    }
-  }
-  
-
-  const renderComments = () => {
-    list.innerHTML = comments.map((comment, index) => {
-      return `
-      <li class="comment" data-index="${index}">
-        <div class="comment-header">
-          <div>${comment.author.name
-            .replaceAll("%BEGIN_QUOTE", "<div class='quote'>")
-            .replaceAll("END_QUOTE%", "</div>")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")}</div>
-          <div>${new Date(comment.date).toLocaleDateString()} 
-              ${new Date(comment.date).toLocaleTimeString()}</div>
-        </div>
-        <div class="comment-body">
-
-          <div class="comment-text">
-            ${comment.text
-            .replaceAll("%BEGIN_QUOTE", "<div class='quote'>")
-            .replaceAll("END_QUOTE%", "</div>")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")}</div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">${comment.likes}</span>
-            <button data-index="${index}" class="like-button ${comment.isLiked ? "-active-like" : ""
-          }"></button>
-            </div>
-          </div>
-        </li>
-    `
-    }).join("")
-
-    initLikesListeners();
-    commentQuote();
-
-  };
-
-  const addButton = document.querySelector(".add-form-button");
-  addButton.addEventListener("click", (event) => {
-    name.classList.remove("error");
-    text.classList.remove("error");
-    if (!name.value.trim() || name.value.trim().length <3 ) {
-      name.classList.add("error");
-      return;
-    }
-    else if (!text.value.trim() || text.value.trim().length <3 ) {
-      text.classList.add("error");
-      return;
-    };
-
-    fetch("https://wedev-api.sky.pro/api/v1/maria-maltseva/comments", {
-      method: "POST",
-      body: JSON.stringify({text: text.value, name: name.value})
-    }).then(() => {
-      getComments();
-
-    name.value = "";
-    text.value = "";
-
-    });
-  });
-
-function commentQuote() {
-  for (const comment of document.querySelectorAll('.comment')) {
-  comment.addEventListener ("click", (event) => {
-    event.stopPropagation();
-    const currentComment = comments[comment.dataset.index];
-    text.value = `${currentComment.author.name}:
-    ${currentComment.text}`;
-    });
-  }
-};
-
-
-</script>
-
 </html>
