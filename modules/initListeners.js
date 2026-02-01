@@ -62,5 +62,27 @@ export const initAddCommentListener = (renderComments) => {
                 name.value = ''
                 text.value = ''
             })
+            .catch((error) => {
+                document.querySelector('.form-loading').style.display = 'none'
+                document.querySelector('.add-form').style.display = 'flex'
+
+                if (error.message === 'Failed to fetch') {
+                    alert('Кажется, у вас сломался интернет, попробуйте позже')
+                }
+                if (error.message === 'Ошибка сервера') {
+                    alert('Произошла ошибка на сервере')
+                }
+                if (error.message === 'Неверный запрос') {
+                    alert('Имя и комментарий должны быть не короче 3х символов')
+
+                    name.classList.add('-error')
+                    text.classList.add('-error')
+
+                    setTimeout(() => {
+                        name.classList.remove('-error')
+                        text.classList.remove('-error')
+                    }, 2000)
+                }
+            })
     })
 }

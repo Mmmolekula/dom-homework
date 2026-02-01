@@ -8,7 +8,8 @@ const addButton = document.querySelector('.add-form-button');
 document.querySelector('.comments').innerHTML =
     'Пожалуйста, подождите, загружаю комментарии...'
 
-fetchComments().then((data) => {
+fetchComments()
+.then((data) => {
     updateComments(data);
     renderComments();
     addButton.disabled = false;
