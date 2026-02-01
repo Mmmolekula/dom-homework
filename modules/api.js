@@ -39,7 +39,7 @@ export const postComment = (name, text) => {
                 return response.json()
             }
         })
-        .catch((error) => {
-            console.error('Ошибка при добавлении комментария:', error)
+        .catch(() => {
+            alert('Ошибка при добавлении комментария')
         })
 }
