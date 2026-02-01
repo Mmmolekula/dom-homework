@@ -4,7 +4,6 @@ import { initAddCommentListener } from './modules/initListeners.js'
 import { renderComments } from './modules/renderComments.js'
 
 const addButton = document.querySelector('.add-form-button');
-addButton.disabled = true;
 
 document.querySelector('.comments').innerHTML =
     'Пожалуйста подождите, загружаю комментарии.'
