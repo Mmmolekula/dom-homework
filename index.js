@@ -6,7 +6,7 @@ import { renderComments } from './modules/renderComments.js'
 const addButton = document.querySelector('.add-form-button');
 
 document.querySelector('.comments').innerHTML =
-    'Пожалуйста подождите, загружаю комментарии.'
+    'Пожалуйста? подождите, загружаю комментарии...'
 
 fetchComments().then((data) => {
     updateComments(data);

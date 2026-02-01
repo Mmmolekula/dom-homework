@@ -42,7 +42,7 @@ export const initAddCommentListener = (renderComments) => {
 
     addButton.addEventListener('click', () => {
         if (!name.value || !text.value) {
-            console.error('заполните форму')
+            alert('Заполните форму!')
             return
         }
 
