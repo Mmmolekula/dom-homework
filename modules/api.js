@@ -3,20 +3,14 @@ export const host = `https://wedev-api.sky.pro/api/v1/maria-maltseva`
 export const fetchComments = () => {
     return fetch(host + '/comments')
         .catch(() => {
-            return Promise.reject({
-                message: 'Fetch-запрос неудачен. Повторите.'
-            });
+            return Promise.reject("Fetch-запрос неудачен. Повторите.");
          })
          .then((response) => {
             if (response.status === 500) {
-                return Promise.reject({
-                    message: 'Сервер сломался/упал. Повторите позже.'
-                });
+                return Promise.reject("Сервер сломался/упал. Повторите позже.");
               }
               else if (response.status === 400) {
-                return Promise.reject({
-                    message: 'Ошибка запроса/Неверный запрос. Повторите позже.'
-                });
+                return Promise.reject("Ошибка запроса/Неверный запрос. Повторите позже.");
               }
               else {
                 return response.json();
@@ -46,20 +40,14 @@ export const postComment = (name, text) => {
         }),
     })
     .catch(() => {
-        return Promise.reject({
-            message: 'Fetch-запрос неудачен. Повторите.'
-        })
+        alert('Fetch-запрос неудачен. Ошибка при добавлении комментария. Повторите.')
     })
     .then((response) => {
         if (response.status === 500) {
-            return Promise.reject({
-                message: 'Сервер сломался/упал. Повторите позже.'
-            })
+            return Promise.reject('Произошла ошибка на сервере')
         }
         if (response.status === 400) {
-            return Promise.reject({
-                message: 'Ошибка запроса/Неверный запрос. Повторите позже.'
-            })
+            return Promise.reject('Неверный запрос. Повторите.')
         }
         if (response.status === 201) {
             return response.json()
