@@ -68,18 +68,13 @@ export const initAddCommentListener = (renderComments) => {
 
                 if (error.message === 'Fetch-запрос неудачен. Повторите.') {
                     alert('Кажется, у вас сломался интернет, попробуйте позже')
-                    name.value = ''
-                    text.value = ''
                 }
                 if (error.message === 'Сервер сломался/упал. Повторите позже.') {
                     alert('Произошла ошибка на сервере')
-                    name.value = ''
-                    text.value = ''
                 }
                 if (error.message === 'Ошибка запроса/Неверный запрос. Повторите позже.') {
                     alert('Имя и комментарий должны быть не короче 3х символов')
-                    name.value = ''
-                    text.value = ''
+
                 }
             })
     })
