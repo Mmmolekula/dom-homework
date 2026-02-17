@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  background: #202020;
 }
 
 .container {
@@ -136,15 +137,23 @@ body {
   opacity: 0.9;
 }
 
-.auth-message {
-  margin-top: 20px;
+.add-auth {
+  height: 40px;
 }
 
-.login-link {
+#login-link {
   text-decoration: underline;
   cursor: pointer;
+  transition: color 0.3s;
 }
 
-.login-link:hover {
-  opacity: 0.8;
+#login-link:hover {
+  color: #0066cc;
+  text-decoration: underline;
 }
+
+.error {
+  background-color: pink;
+}
+
+

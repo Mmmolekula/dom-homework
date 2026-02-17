@@ -1,4 +1,5 @@
-export const host = "https://wedev-api.sky.pro/api/v2/maria-maltseva";
+const commentsURL = "https://wedev-api.sky.pro/api/v2/maria-maltseva/comments";
+const userURL = "https://wedev-api.sky.pro/api/user/login";
 
 export let token;
 export const setToken = (newToken) => {
@@ -8,86 +9,70 @@ export const setToken = (newToken) => {
 export let username;
 export const setUsername = (newUsername) => {
   username = newUsername;
-};
+  };
 
-export const fetchComments = () => {
-  return fetch(host + "/comments", {
+
+export function fetchGet() {
+    return fetch(commentsURL, {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token}`
     }
   })
   .catch(() => {
-    return Promise.reject({
-      message: "Fetch-запрос неудачен. Повторите."
-    });
+    return Promise.reject("Fetch-запрос неудачен. Повторите.");
   })
   .then((response) => {
     if (response.status === 500) {
-      return Promise.reject({
-        message: "Сервер сломался/упал. Повторите позже."
-      });
-    } else if (response.status === 400) {
-      return Promise.reject({
-        message: "Ошибка запроса/Неверный запрос. Повторите позже."
-      });
-    } else {
+      return Promise.reject("Сервер сломался/упал. Повторите позже.");
+    }
+    else if (response.status === 400) {
+      return Promise.reject("Ошибка запроса/Неверный запрос. Повторите позже.");
+    }
+    else {
       return response.json();
     }
   })
-  .then((responseData) => {
-    const appComments = responseData.comments.map((comment) => {
-      return {
-        name: comment.author.name,
-        date: new Date(comment.date),
-        text: comment.text,
-        likes: comment.likes,
-        isLikes: false,
-      };
-    });
-    return appComments;
-  });
 };
 
-export const postComment = (name, text) => {
-  return fetch(host + "/comments", {
+export function fetchPost({text, name}) {
+    return fetch(commentsURL, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify({ name, text })
+      Authorization: `Bearer ${token}`,
+  },
+    body: JSON.stringify({text: text.value, name: name.value})
   })
   .catch(() => {
-    return Promise.reject({
-      message: "Fetch-запрос неудачен. Повторите."
-    });
+    alert("Fetch-запрос неудачен. Повторите.")
   })
   .then((response) => {
     if (response.status === 500) {
-      return Promise.reject({
-        message: "Сервер сломался/упал. Повторите позже."
-      });
+      return Promise.reject("Сервер сломался/упал. Повторите позже.");
     }
-    if (response.status === 400) {
-      return Promise.reject({
-        message: "Ошибка запроса/Неверный запрос. Повторите позже."
-      });
+    else if (response.status === 400) {
+      return Promise.reject("Ошибка запроса/Неверный запрос. Повторите позже.");
     }
-    if (response.status === 201) {
+    else {
       return response.json();
     }
-  });
+  })
 };
 
-export const login = ({ login, password }) => {
-  return fetch("https://wedev-api.sky.pro/api/user/login", {
+export function login ({login, password}) {
+  return fetch(userURL, {
     method: "POST",
-    body: JSON.stringify({ login, password })
+    body: JSON.stringify({
+      login,
+      password,
+    })
   })
   .then((response) => {
     if (response.status === 400) {
       throw new Error("Неправильный логин или пароль.");
-    } else {
+    }
+    else {
       return response.json();
     }
-  });
-};
+  })
+}

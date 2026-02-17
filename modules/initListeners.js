@@ -1,87 +1,95 @@
-import { fetchComments, postComment } from "./api.js";
-import { comments, updateComments } from "./comments.js";
-import { sanitizeHtml } from "./sanitizeHtml.js";
+import { comments } from "./comments.js";
+import { fetchPost, token } from "./api.js";
+import { renderLogin } from "./loginPage.js";
+import { getComments } from "../index.js";
+import { renderComments } from "./renderComments.js";
 
-export const initLikeListeners = (renderComments) => {
-  const likeButtons = document.querySelectorAll(".like-button");
+export function initLikesListeners() {
+  const likeButtonsElements = document.querySelectorAll(".like-button");
 
-  for (const likeButton of likeButtons) {
-    likeButton.addEventListener("click", (event) => {
+  for (let likeButtonElement of likeButtonsElements) {
+    likeButtonElement.addEventListener("click", (event) => {
       event.stopPropagation();
-
-      const index = likeButton.dataset.index;
-      const comment = comments[index];
-
-      comment.likes = comment.isLikes
-        ? comment.likes - 1
-        : comment.likes + 1;
-
-      comment.isLikes = !comment.isLikes;
+      const indexL = likeButtonElement.dataset.index;
+      let comment = comments[indexL];
+      comment.likes = comment.isLiked ? comment.likes - 1 : comment.likes + 1;
+      comment.isLiked = !comment.isLiked;
 
       renderComments();
     });
   }
-};
+}
 
-export const initReplyListeners = () => {
+export function commentQuote() {
   const text = document.getElementById("text-input");
-  const commentElements = document.querySelectorAll(".comment");
-
-  for (const commentElement of commentElements) {
-    commentElement.addEventListener("click", () => {
-      const currentComment = comments[commentElement.dataset.index];
-      text.value = `${currentComment.name}: ${currentComment.text}`;
+  for (const comment of document.querySelectorAll(".comment")) {
+    comment.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const currentComment = comments[comment.dataset.index];
+      text.value = `${currentComment.author.name}:
+${currentComment.text}`;
     });
   }
-};
+}
 
-export const initAddCommentListener = (renderComments) => {
+export function formAction() {
+  if (!token) return;
   const name = document.getElementById("name-input");
   const text = document.getElementById("text-input");
+
   const addButton = document.querySelector(".add-form-button");
-
-
   addButton.addEventListener("click", () => {
-    if (!name.value || !text.value) {
-      alert("Заполните форму!");
+
+    name.classList.remove("error");
+    text.classList.remove("error");
+
+    if (!name.value.trim()) {
+      name.classList.add("error");
+      return;
+    } 
+    if (!text.value.trim()) {
+      text.classList.add("error");
+      alert("Комментарий не может быть пустым.");
+      return;
+    } else if (text.value.trim().length < 3) {
+      text.classList.add("error");
+      alert("Комментарий должен содержать не менее 3 символов.");
       return;
     }
 
-    document.querySelector(".form-loading").style.display = "block";
-    document.querySelector(".add-form").style.display = "none";
+    addButton.disabled = true;
+    addButton.textContent = "Комментарий добавляется...";
+    addButton.style.fontSize = "16px";
 
-    postComment(sanitizeHtml(name.value), sanitizeHtml(text.value))
-      .then(() => {
-        return fetchComments();
-      })
-      .then((comments) => {
-        updateComments(comments);
-        renderComments();
-        document.querySelector(".form-loading").style.display = "none";
-        document.querySelector(".add-form").style.display = "flex";
+    postComment();
 
-        name.value = "";
-        text.value = "";
-      })
-      .catch((error) => {
-        document.querySelector(".form-loading").style.display = "none";
-        document.querySelector(".add-form").style.display = "flex";
-
-        if (error.message === "Fetch-запрос неудачен. Повторите.") {
-          alert("Кажется, у вас сломался интернет, попробуйте позже");
+    function postComment() {
+      fetchPost({ text, name })
+        .then(() => {
+          getComments();
+        })
+        .then(() => {
+          addButton.disabled = false;
+          addButton.textContent = "Написать";
+          addButton.style.fontSize = "24px";
           name.value = "";
           text.value = "";
-        }
-        if (error.message === "Сервер сломался/упал. Повторите позже.") {
-          alert("Произошла ошибка на сервере");
-          name.value = "";
-          text.value = "";
-        }
-        if (error.message === "Ошибка запроса/Неверный запрос. Повторите позже.") {
-          alert("Имя и комментарий должны быть не короче 3х символов");
-          name.value = "";
-          text.value = "";
-        }
-      });
+        })
+        .catch((error) => {
+          alert(error);
+          console.log(error);
+          addButton.disabled = false;
+          addButton.textContent = "Написать";
+          addButton.style.fontSize = "24px";
+        });
+    }
   });
-};
+}
+
+export function authAction() {
+  if (token) return;
+  const loginLink = document.getElementById("login-link");
+  loginLink.addEventListener("click", () => {
+    renderLogin();
+  });
+}
